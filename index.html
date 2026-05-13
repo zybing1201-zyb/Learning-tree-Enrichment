@@ -652,7 +652,7 @@ function submitAndPrint() {
   submitDateTime = now.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})
     + " · " + now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
 
-  const APPS_SCRIPT_URL = "";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytBZUSwPcx2pw1HIsLawQXTgjxQbImteOxyg7fqTuNasx2waffVvC7Sy15niujaUPstg/exec";
   if (APPS_SCRIPT_URL) {
     fetch(APPS_SCRIPT_URL, {
       method:"POST", mode:"no-cors",
