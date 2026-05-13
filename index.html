@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Tree 2026 Summer Enrichment — Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1D9E75;
+    --green-dark: #0F6E56;
+    --green-light: #E1F5EE;
+    --green-text: #085041;
+    --amber: #BA7517;
+    --amber-light: #FAEEDA;
+    --red: #E24B4A;
+    --red-light: #FCEBEB;
+    --gray-50: #F8F8F7;
+    --gray-100: #F0EFEB;
+    --gray-200: #E0DED8;
+    --gray-400: #9B9991;
+    --gray-600: #5F5E5A;
+    --gray-900: #1C1C1A;
+    --border: 1px solid #E0DED8;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .site-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .site-header .school-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+  }
+
+  .site-header .form-title {
+    font-size: 14px;
+    color: var(--gray-600);
+  }
+
+  .card {
+    background: #fff;
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .prog-step {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gray-200);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 500;
+    color: var(--gray-400);
+    background: #fff;
+    flex-shrink: 0;
+    transition: all 0.25s;
+  }
+  .prog-step.active { border-color: var(--green); color: var(--green); }
+  .prog-step.done { background: var(--green); border-color: var(--green); color: #fff; }
+  .prog-line { flex: 1; height: 1px; background: var(--gray-200); transition: background 0.25s; }
+  .prog-line.done { background: var(--green); }
+  .prog-labels {
+    display: flex; justify-content: space-between;
+    margin-bottom: 1.75rem;
+  }
+  .prog-label {
+    font-size: 10px; color: var(--gray-400);
+    width: 30px; text-align: center;
+  }
+  .prog-label.active { color: var(--green); font-weight: 500; }
+
+  /* Pages */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeUp 0.2s ease; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+  }
+  .page-sub {
+    font-size: 13px;
+    color: var(--gray-600);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  /* Notice box */
+  .notice {
+    background: #EBF4FF;
+    border: 1px solid #B5D4F4;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #0C447C;
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+  .notice strong { font-weight: 600; }
+
+  /* Form fields */
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label { font-size: 12px; font-weight: 500; color: var(--gray-600); }
+  .field input, .field select {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 9px 12px;
+    border: var(--border);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    color: var(--gray-900);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(29,158,117,0.12); }
+  .field input.err, .field select.err { border-color: var(--red); }
+  .field-err { font-size: 11px; color: var(--red); display: none; }
+  .field-err.show { display: block; }
+
+  /* Buttons */
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    border: var(--border);
+    background: #fff;
+    color: var(--gray-900);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn:hover { background: var(--gray-50); }
+  .btn.primary {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .btn.primary:hover { background: var(--green-dark); }
+  .btn.amber { background: var(--amber); border-color: var(--amber); color: #fff; }
+  .btn.amber:hover { background: #9e6210; }
+
+  .nav-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: var(--border);
+  }
+
+  /* Course selector */
+  .week-nav { display: flex; align-items: center; gap: 5px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .wbtn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; padding: 4px 9px;
+    border: var(--border); border-radius: var(--radius-sm);
+    background: #fff; color: var(--gray-600); cursor: pointer;
+    transition: all 0.15s;
+  }
+  .wbtn.active { background: var(--gray-100); color: var(--gray-900); font-weight: 500; border-color: var(--gray-400); }
+
+  .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+
+  .course-card {
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    background: #fff;
+    transition: opacity 0.15s;
+  }
+  .course-card.unavail { opacity: 0.3; }
+
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+  .ctag {
+    font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 20px;
+    display: inline-block; line-height: 1.6;
+  }
+  .cap-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .cap-bar { height: 4px; width: 56px; border-radius: 2px; background: var(--gray-100); overflow: hidden; }
+  .cap-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .cap-label { font-size: 10px; color: var(--gray-400); }
+
+  .cgrade { font-size: 11px; margin-bottom: 5px; }
+  .cprice { font-size: 11px; color: var(--gray-400); margin-bottom: 8px; }
+  .slot-list { display: flex; flex-direction: column; gap: 5px; }
+
+  .slot-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; padding: 6px 8px;
+    border: var(--border); border-radius: var(--radius-sm);
+    background: #fff; color: var(--gray-900);
+    cursor: pointer; text-align: left; line-height: 1.5;
+    transition: all 0.15s;
+  }
+  .slot-btn:hover:not(:disabled) { background: var(--gray-50); }
+  .slot-btn.selected { border: 1.5px solid var(--green); background: var(--green-light); color: var(--green-text); }
+  .slot-btn.blocked { opacity: 0.22; cursor: not-allowed; }
+  .slot-btn.full { background: var(--gray-50); color: var(--gray-400); cursor: not-allowed; border-color: var(--gray-200); }
+  .slot-btn.waitlisted { border: 1.5px dashed var(--amber); background: var(--amber-light); color: #6b3e05; }
+  .slot-name { font-weight: 500; display: block; margin-bottom: 1px; }
+  .slot-sub { font-size: 10px; opacity: 0.75; display: block; }
+  .slot-cap-row { display: flex; align-items: center; gap: 5px; margin-top: 4px; }
+  .slot-cap-bar { flex: 1; height: 3px; border-radius: 2px; background: var(--gray-100); overflow: hidden; }
+  .slot-cap-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .slot-cap-label { font-size: 9px; color: var(--gray-400); white-space: nowrap; }
+  .unavail-note { font-size: 10px; color: var(--gray-400); margin-top: 6px; font-style: italic; }
+
+  /* Selection summary */
+  .sel-summary {
+    background: var(--gray-50);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    margin-bottom: 1rem;
+  }
+  .sel-summary-title { font-size: 11px; font-weight: 500; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 12px; padding: 3px 10px;
+    border-radius: 20px; background: #fff;
+    border: var(--border); color: var(--gray-900);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .chip.wl { background: var(--amber-light); border-color: #EF9F27; color: #6b3e05; }
+  .chip-rm { cursor: pointer; color: var(--gray-400); font-size: 16px; line-height: 1; }
+  .empty-note { font-size: 13px; color: var(--gray-400); }
+
+  .day-row { display: grid; grid-template-columns: 36px 1fr; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .day-label { font-size: 11px; color: var(--gray-600); font-weight: 500; }
+  .tbar { position: relative; height: 18px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
+  .tblk { position: absolute; top: 2px; height: 14px; border-radius: 2px; display: flex; align-items: center; padding: 0 4px; font-size: 9px; font-weight: 500; color: #fff; white-space: nowrap; overflow: hidden; }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: #fff;
+    border-radius: var(--radius);
+    border: var(--border);
+    padding: 1.5rem;
+    max-width: 340px; width: 100%;
+  }
+  .modal-box h4 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .modal-box p { font-size: 13px; color: var(--gray-600); margin-bottom: 1rem; line-height: 1.55; }
+  .modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* Review & print */
+  .review-block { border: var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; }
+  .review-hdr { background: var(--gray-50); padding: 9px 14px; font-size: 11px; font-weight: 500; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.05em; }
+  .review-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 14px; border-top: var(--border); font-size: 13px; }
+  .review-row .lbl { color: var(--gray-600); font-size: 12px; }
+  .review-row.total { font-weight: 600; background: var(--gray-50); font-size: 14px; }
+  .review-sub { font-size: 11px; color: var(--gray-400); }
+
+  /* Print page */
+  .print-card {
+    background: #fff;
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+  }
+  .print-school { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--green-dark); margin-bottom: 2px; }
+  .print-subtitle { font-size: 12px; color: var(--gray-600); padding-bottom: 1rem; margin-bottom: 1rem; border-bottom: var(--border); }
+  .print-section { margin-bottom: 1.25rem; }
+  .print-section-title { font-size: 11px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; padding-bottom: 4px; border-bottom: var(--border); }
+  .print-row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
+  .print-row .lbl { color: var(--gray-600); font-size: 12px; }
+  .print-total { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; padding: 10px 0; border-top: 2px solid var(--gray-200); margin-top: 4px; }
+  .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; padding-top: 1rem; border-top: var(--border); }
+  .sig-line { font-size: 11px; color: var(--gray-400); line-height: 2.2; }
+  .sig-line span { display: block; border-bottom: 1px solid var(--gray-200); height: 28px; margin-bottom: 4px; }
+
+  .print-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .site-header, .progress-wrap, .prog-labels, .print-actions, .nav-row { display: none !important; }
+    .card { border: none; padding: 0; }
+    .print-card { border: none; }
+  }
+
+  @media (max-width: 480px) {
+    .field-row { grid-template-columns: 1fr; }
+    .course-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="site-header">
+    <div class="school-name">Learning Tree Walnut Education Center</div>
+    <div class="form-title">2026 Summer Enrichment Club — Enrollment Form</div>
+  </div>
+
+  <div class="card">
+    <div class="progress-wrap" id="progressDots"></div>
+    <div class="prog-labels" id="progressLabels"></div>
+
+    <!-- Page 0: Intro -->
+    <div class="page active" id="page0">
+      <div class="page-title">Welcome</div>
+      <div class="page-sub">Complete enrollment in 4 easy steps. It takes about 3 minutes.</div>
+      <div class="notice">
+        <strong>Please read before you begin:</strong><br>
+        · Classes run for 10 weeks — availability varies by week. Check Week view in Step 3.<br>
+        · Some classes are divided by grade level. Select the correct session for your child.<br>
+        · Enrollment is confirmed upon payment. Waitlisted spots are not guaranteed.<br>
+        · For questions, please contact the front office before submitting this form.
+      </div>
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn primary" onclick="goTo(1)">Get started &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Page 1: Student -->
+    <div class="page" id="page1">
+      <div class="page-title">Student information</div>
+      <div class="page-sub">Tell us about the child enrolling in summer enrichment.</div>
+      <div class="field-row">
+        <div class="field">
+          <label>First name *</label>
+          <input type="text" id="s-first" placeholder="First name">
+          <span class="field-err" id="err-s-first">Please enter first name</span>
+        </div>
+        <div class="field">
+          <label>Last name *</label>
+          <input type="text" id="s-last" placeholder="Last name">
+          <span class="field-err" id="err-s-last">Please enter last name</span>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Grade in Fall 2026 *</label>
+          <select id="s-grade">
+            <option value="">Select grade</option>
+            <option>TK</option><option>K</option><option>G1</option><option>G2</option>
+            <option>G3</option><option>G4</option><option>G5</option><option>G6</option>
+            <option>G7</option><option>G8</option>
+          </select>
+          <span class="field-err" id="err-s-grade">Please select a grade</span>
+        </div>
+        <div class="field">
+          <label>School (optional)</label>
+          <input type="text" id="s-school" placeholder="School name">
+        </div>
+      </div>
+      <div class="nav-row">
+        <button class="btn" onclick="goTo(0)">&larr; Back</button>
+        <button class="btn primary" onclick="validateStep1()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Page 2: Parent -->
+    <div class="page" id="page2">
+      <div class="page-title">Parent / guardian contact</div>
+      <div class="page-sub">We'll use this to confirm registration and send updates.</div>
+      <div class="field-row">
+        <div class="field">
+          <label>First name *</label>
+          <input type="text" id="p-first" placeholder="First name">
+          <span class="field-err" id="err-p-first">Required</span>
+        </div>
+        <div class="field">
+          <label>Last name *</label>
+          <input type="text" id="p-last" placeholder="Last name">
+          <span class="field-err" id="err-p-last">Required</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Email address *</label>
+        <input type="email" id="p-email" placeholder="your@email.com">
+        <span class="field-err" id="err-p-email">Please enter a valid email</span>
+      </div>
+      <div class="field">
+        <label>Phone number *</label>
+        <input type="tel" id="p-phone" placeholder="(xxx) xxx-xxxx">
+        <span class="field-err" id="err-p-phone">Required</span>
+      </div>
+      <div class="field">
+        <label>Relationship to student (optional)</label>
+        <select id="p-rel">
+          <option value="">Select</option>
+          <option>Mother</option><option>Father</option><option>Guardian</option><option>Other</option>
+        </select>
+      </div>
+      <div class="nav-row">
+        <button class="btn" onclick="goTo(1)">&larr; Back</button>
+        <button class="btn primary" onclick="validateStep2()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Page 3: Classes -->
+    <div class="page" id="page3">
+      <div class="page-title">Select classes</div>
+      <div class="page-sub">Choose a week to check availability, then tap a time slot to enroll. Conflicting slots dim automatically.</div>
+      <div class="week-nav" id="weekNav"></div>
+      <div class="course-grid" id="courseGrid"></div>
+      <div class="sel-summary">
+        <div class="sel-summary-title">Enrolled classes</div>
+        <div class="chips" id="selChips"><span class="empty-note">No classes selected yet</span></div>
+        <div id="dayBarsWrap" style="display:none;margin-top:10px">
+          <div style="font-size:11px;color:#9B9991;margin-bottom:5px">Daily schedule view (3:00 – 6:15 pm)</div>
+          <div id="dayBars"></div>
+        </div>
+      </div>
+      <div class="nav-row">
+        <button class="btn" onclick="goTo(2)">&larr; Back</button>
+        <button class="btn primary" onclick="validateStep3()">Review & total &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Page 4: Review -->
+    <div class="page" id="page4">
+      <div class="page-title">Review your registration</div>
+      <div class="page-sub">Check all details before confirming.</div>
+      <div id="reviewContent"></div>
+      <div class="nav-row">
+        <button class="btn" onclick="goTo(3)">&larr; Back</button>
+        <button class="btn primary" onclick="submitAndPrint()">Confirm & view summary &#10003;</button>
+      </div>
+    </div>
+
+    <!-- Page 5: Print -->
+    <div class="page" id="page5">
+      <div class="print-actions">
+        <div class="page-title" style="margin-bottom:0">Registration complete</div>
+        <button class="btn primary" onclick="window.print()">&#128438; Print / Save PDF</button>
+      </div>
+      <div class="print-card" id="printArea"></div>
+      <div style="text-align:center;margin-top:1.25rem">
+        <button class="btn" onclick="startOver()">Start a new registration</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Full-screen modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────
+const SLOTS = [
+  { id:"pilates", name:"Mat Pilates", grade:"K–G8", price:"$10 / session", priceNum:10,
+    color:"#1D9E75", tagBg:"#E1F5EE", tagTx:"#085041", multi:false,
+    sessions:[{ sid:"pilates-a", time:"Mon  4:00–5:00 pm", gradeLabel:"", days:["Mon"], ts:[[960,1020]], cap:20, enrolled:0, waitlist:0 }] },
+
+  { id:"golf", name:"Golf", grade:"G1–G8", price:"$180 / 4 sessions", priceNum:180,
+    color:"#639922", tagBg:"#EAF3DE", tagTx:"#27500A", multi:false,
+    sessions:[{ sid:"golf-a", time:"Mon/Tue/Wed/Fri  3:30–5:00 pm", gradeLabel:"", days:["Mon","Tue","Wed","Fri"], ts:[[930,1020]], cap:12, enrolled:0, waitlist:0 }] },
+
+  { id:"fencing", name:"Fencing", grade:"G1–G8", price:"$95 / 4 sessions", priceNum:95,
+    color:"#534AB7", tagBg:"#EEEDFE", tagTx:"#3C3489", multi:false,
+    sessions:[{ sid:"fencing-a", time:"Tue/Wed/Thu  3:30–4:30 pm", gradeLabel:"", days:["Tue","Wed","Thu"], ts:[[930,990]], cap:15, enrolled:0, waitlist:0 }] },
+
+  { id:"drone", name:"Drone Program", grade:"", price:"$20 / session", priceNum:20,
+    color:"#378ADD", tagBg:"#E6F1FB", tagTx:"#0C447C", multi:true,
+    sessions:[
+      { sid:"drone-a", time:"Wed  3:30–4:30 pm", gradeLabel:"G2–G4", days:["Wed"], ts:[[930,990]], cap:10, enrolled:0, waitlist:0 },
+      { sid:"drone-b", time:"Wed  4:30–5:30 pm", gradeLabel:"G4–G8", days:["Wed"], ts:[[990,1050]], cap:10, enrolled:0, waitlist:0 }
+    ]},
+
+  { id:"art", name:"Creative Art", grade:"", price:"$80 / 2 sessions", priceNum:80,
+    color:"#BA7517", tagBg:"#FAEEDA", tagTx:"#633806", multi:true,
+    sessions:[
+      { sid:"art-a", time:"Tue/Thu  3:00–4:30 pm", gradeLabel:"TK–G2", days:["Tue","Thu"], ts:[[900,990]], cap:8, enrolled:0, waitlist:0 },
+      { sid:"art-b", time:"Tue/Thu  4:30–6:00 pm", gradeLabel:"G3–G8", days:["Tue","Thu"], ts:[[990,1080]], cap:8, enrolled:0, waitlist:0 }
+    ]},
+
+  { id:"print3d", name:"3D Print", grade:"", price:"$96 / 2 sessions", priceNum:96,
+    color:"#D4537E", tagBg:"#FBEAF0", tagTx:"#72243E", multi:true,
+    sessions:[
+      { sid:"print3d-a", time:"Tue/Thu  3:00–4:30 pm", gradeLabel:"K–G2", days:["Tue","Thu"], ts:[[900,990]], cap:12, enrolled:0, waitlist:0 },
+      { sid:"print3d-b", time:"Tue/Thu  4:30–5:30 pm", gradeLabel:"G3–G8", days:["Tue","Thu"], ts:[[990,1050]], cap:12, enrolled:0, waitlist:0 }
+    ]},
+
+  { id:"cooking", name:"Cooking", grade:"", price:"$15 / session", priceNum:15,
+    color:"#D85A30", tagBg:"#FAECE7", tagTx:"#712B13", multi:true,
+    sessions:[
+      { sid:"cooking-a", time:"Wed  3:30–4:30 pm", gradeLabel:"G3–G8", days:["Wed"], ts:[[930,990]], cap:10, enrolled:0, waitlist:0 },
+      { sid:"cooking-b", time:"Wed  4:45–5:45 pm", gradeLabel:"K–G3", days:["Wed"], ts:[[1005,1065]], cap:10, enrolled:0, waitlist:0 }
+    ]},
+
+  { id:"travel", name:"Travel Writing", grade:"G3–G8", price:"$1,250 / 20 sessions", priceNum:1250,
+    color:"#888780", tagBg:"#F1EFE8", tagTx:"#444441", multi:false,
+    sessions:[{ sid:"travel-a", time:"Tue/Thu  3:30–5:30 pm", gradeLabel:"", days:["Tue","Thu"], ts:[[930,1050]], cap:10, enrolled:0, waitlist:0 }] },
+
+  { id:"chorus", name:"Chorus", grade:"K–G8", price:"$240 / 12 sessions", priceNum:240,
+    color:"#E24B4A", tagBg:"#FCEBEB", tagTx:"#791F1F", multi:false,
+    sessions:[{ sid:"chorus-a", time:"Fri  5:15–6:15 pm", gradeLabel:"", days:["Fri"], ts:[[1035,1095]], cap:20, enrolled:0, waitlist:0 }] }
+];
+
+const WEEK_AVAIL = {
+  1:["pilates","golf","art","cooking","travel","chorus"],
+  2:["pilates","golf","drone","print3d","cooking","travel","chorus"],
+  3:["pilates","fencing","art","cooking","travel","chorus"],
+  4:["pilates","fencing","print3d","cooking","travel","chorus"],
+  5:["pilates","golf","drone","art","cooking","travel"],
+  6:["pilates","golf","drone","print3d","cooking","travel","chorus"],
+  7:["pilates","fencing","art","cooking","travel","chorus"],
+  8:["pilates","fencing","print3d","cooking","travel","chorus"],
+  9:["pilates","golf","drone","art","cooking","travel","chorus"],
+  10:["pilates","golf","drone","cooking","travel"]
+};
+
+const DAY_ORDER = ["Mon","Tue","Wed","Thu","Fri"];
+const MIN_T = 900, MAX_T = 1095;
+
+let curPage = 0;
+let week = 1;
+let selected = new Set();
+let waitlisted = new Set();
+let pendingSid = null;
+
+// ─── HELPERS ─────────────────────────────────────────────
+function allSessions() {
+  const arr = [];
+  SLOTS.forEach(cl => cl.sessions.forEach(s => arr.push({ ...s, parentId: cl.id, color: cl.color })));
+  return arr;
+}
+function findSession(sid) { return allSessions().find(s => s.sid === sid); }
+function findClass(sid) { return SLOTS.find(cl => cl.sessions.some(s => s.sid === sid)); }
+
+function overlaps(t1, t2) {
+  for (const [a,b] of t1) for (const [c,d] of t2) if (a < d && b > c) return true;
+  return false;
+}
+function daysOverlap(d1, d2) { return d1.some(d => d2.includes(d)); }
+
+function isBlocked(sid, days, ts) {
+  for (const selSid of selected) {
+    if (selSid === sid) continue;
+    const s = findSession(selSid);
+    if (s && daysOverlap(days, s.days) && overlaps(ts, s.ts)) return true;
+  }
+  return false;
+}
+
+function capColor(e, c) {
+  const r = e / c;
+  return r >= 1 ? "#E24B4A" : r >= 0.8 ? "#BA7517" : "#1D9E75";
+}
+
+function calcTotal() {
+  let t = 0;
+  selected.forEach(sid => { const cl = findClass(sid); if (cl) t += cl.priceNum; });
+  return t;
+}
+
+function v(id) { return document.getElementById(id); }
+
+// ─── PROGRESS ────────────────────────────────────────────
+const STEP_LABELS = ["Student","Parent","Classes","Review","Done"];
+
+function renderProgress() {
+  const dots = v("progressDots");
+  const labels = v("progressLabels");
+  if (!dots) return;
+  dots.innerHTML = "";
+  labels.innerHTML = "";
+  for (let i = 1; i <= 5; i++) {
+    if (i > 1) {
+      const line = document.createElement("div");
+      line.className = "prog-line" + (curPage > i ? " done" : "");
+      dots.appendChild(line);
+    }
+    const dot = document.createElement("div");
+    dot.className = "prog-step" + (curPage === i ? " active" : curPage > i ? " done" : "");
+    dot.textContent = curPage > i ? "✓" : String(i);
+    dots.appendChild(dot);
+
+    const lbl = document.createElement("div");
+    lbl.className = "prog-label" + (curPage === i ? " active" : "");
+    lbl.textContent = STEP_LABELS[i - 1];
+    labels.appendChild(lbl);
+  }
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────
+function goTo(n) {
+  v("page" + curPage).classList.remove("active");
+  curPage = n;
+  v("page" + curPage).classList.add("active");
+  renderProgress();
+  if (n === 3) renderCourseUI();
+  if (n === 4) buildReview();
+  if (n === 5) buildPrint();
+  window.scrollTo(0, 0);
+}
+
+// ─── VALIDATION ──────────────────────────────────────────
+function setErr(id, show) {
+  const inp = v(id);
+  const err = v("err-" + id);
+  if (inp) inp.classList.toggle("err", show);
+  if (err) err.classList.toggle("show", show);
+}
+
+function validateStep1() {
+  const f = v("s-first").value.trim();
+  const l = v("s-last").value.trim();
+  const g = v("s-grade").value;
+  setErr("s-first", !f); setErr("s-last", !l); setErr("s-grade", !g);
+  if (f && l && g) goTo(2);
+}
+
+function validateStep2() {
+  const f = v("p-first").value.trim();
+  const l = v("p-last").value.trim();
+  const e = v("p-email").value.trim();
+  const ph = v("p-phone").value.trim();
+  const eok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+  setErr("p-first", !f); setErr("p-last", !l);
+  setErr("p-email", !eok); setErr("p-phone", !ph);
+  if (f && l && eok && ph) goTo(3);
+}
+
+function validateStep3() {
+  if (selected.size === 0 && waitlisted.size === 0) {
+    alert("Please select at least one class before continuing.");
+    return;
+  }
+  goTo(4);
+}
+
+function submitAndPrint() {
+  // ── GOOGLE SHEETS INTEGRATION ──────────────────────────
+  // To enable: replace YOUR_APPS_SCRIPT_URL below with your
+  // Google Apps Script Web App URL (see README instructions).
+  // Leave blank to skip and go straight to the print page.
+  const APPS_SCRIPT_URL = "";
+
+  const payload = buildPayload();
+
+  if (APPS_SCRIPT_URL) {
+    fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+  }
+
+  goTo(5);
+}
+
+function buildPayload() {
+  const classes = [];
+  selected.forEach(sid => {
+    const cl = findClass(sid);
+    const sess = findSession(sid);
+    if (cl && sess) classes.push({ name: cl.name, time: sess.time, grade: sess.gradeLabel, price: cl.priceNum, status: "enrolled" });
+  });
+  waitlisted.forEach(sid => {
+    const cl = findClass(sid);
+    const sess = findSession(sid);
+    if (cl && sess) classes.push({ name: cl.name, time: sess.time, grade: sess.gradeLabel, price: 0, status: "waitlist" });
+  });
+  return {
+    timestamp: new Date().toISOString(),
+    student: {
+      firstName: v("s-first").value.trim(),
+      lastName: v("s-last").value.trim(),
+      grade: v("s-grade").value,
+      school: v("s-school").value.trim()
+    },
+    parent: {
+      firstName: v("p-first").value.trim(),
+      lastName: v("p-last").value.trim(),
+      email: v("p-email").value.trim(),
+      phone: v("p-phone").value.trim(),
+      relationship: v("p-rel").value
+    },
+    classes,
+    totalDue: calcTotal()
+  };
+}
+
+// ─── MODAL ───────────────────────────────────────────────
+function openModal(sid) {
+  pendingSid = sid;
+  const cl = findClass(sid);
+  const sess = findSession(sid);
+  v("modalBox").innerHTML = `
+    <h4>This class is full</h4>
+    <p><strong>${cl.name}</strong><br>${sess.time.trim()}${sess.gradeLabel ? " · " + sess.gradeLabel : ""}<br><br>
+    Max ${sess.cap} students · ${sess.waitlist} already on waitlist.</p>
+    <div class="modal-btns">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn amber" onclick="joinWaitlist()">Join waitlist</button>
+    </div>`;
+  v("modalOverlay").classList.add("open");
+}
+
+function closeModal() {
+  v("modalOverlay").classList.remove("open");
+  pendingSid = null;
+}
+
+function joinWaitlist() {
+  if (!pendingSid) return;
+  const sess = findSession(pendingSid);
+  if (sess) { sess.waitlist++; waitlisted.add(pendingSid); }
+  closeModal();
+  renderCourseUI();
+}
+
+v("modalOverlay").addEventListener("click", e => { if (e.target === v("modalOverlay")) closeModal(); });
+
+// ─── REMOVE CHIP ─────────────────────────────────────────
+function rmSlot(sid) {
+  const sess = findSession(sid);
+  if (sess && selected.has(sid)) sess.enrolled = Math.max(0, sess.enrolled - 1);
+  selected.delete(sid);
+  waitlisted.delete(sid);
+  renderCourseUI();
+}
+
+// ─── COURSE UI ───────────────────────────────────────────
+function renderCourseUI() {
+  renderWeekNav();
+  renderCourseGrid();
+  renderSelSummary();
+}
+
+function renderWeekNav() {
+  const nav = v("weekNav");
+  if (!nav) return;
+  nav.innerHTML = '<span style="font-size:12px;color:#9B9991;margin-right:4px">Week:</span>';
+  for (let w = 1; w <= 10; w++) {
+    const b = document.createElement("button");
+    b.className = "wbtn" + (w === week ? " active" : "");
+    b.textContent = "Wk " + w;
+    b.onclick = () => { week = w; renderCourseUI(); };
+    nav.appendChild(b);
+  }
+}
+
+function renderCourseGrid() {
+  const grid = v("courseGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  const avail = WEEK_AVAIL[week] || [];
+
+  SLOTS.forEach(cl => {
+    const isAvail = avail.includes(cl.id);
+    const s0 = cl.sessions[0];
+    const card = document.createElement("div");
+    card.className = "course-card" + (isAvail ? "" : " unavail");
+
+    let capHtml = "";
+    if (!cl.multi) {
+      const fp = s0.cap > 0 ? Math.round(s0.enrolled / s0.cap * 100) : 0;
+      capHtml = `<div class="cap-wrap">
+        <div class="cap-bar"><div class="cap-fill" style="width:${s0.enrolled > 0 ? fp : 0}%;background:${s0.enrolled > 0 ? capColor(s0.enrolled, s0.cap) : "transparent"}"></div></div>
+        <span class="cap-label">Max ${s0.cap}</span>
+      </div>`;
+    }
+
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="ctag" style="background:${cl.tagBg};color:${cl.tagTx}">${cl.name}</span>
+        ${capHtml}
+      </div>
+      ${cl.grade ? `<div class="cgrade" style="color:${cl.tagTx}">${cl.grade}</div>` : ""}
+      <div class="cprice">${cl.price}</div>
+      <div class="slot-list" id="slots-${cl.id}"></div>
+      ${!isAvail ? '<div class="unavail-note">Not offered this week</div>' : ""}
+    `;
+
+    const slotList = card.querySelector(`#slots-${cl.id}`);
+    cl.sessions.forEach(s => {
+      const isSel = selected.has(s.sid);
+      const isWL = waitlisted.has(s.sid);
+      const full = s.enrolled >= s.cap;
+      const blocked = !isSel && !isWL && isBlocked(s.sid, s.days, s.ts);
+
+      let cls = "slot-btn";
+      if (isSel) cls += " selected";
+      else if (isWL) cls += " waitlisted";
+      else if (blocked) cls += " blocked";
+      else if (full) cls += " full";
+
+      const grL = s.gradeLabel ? `<span class="slot-sub">${s.gradeLabel}</span>` : "";
+      const note = isWL ? '<span class="slot-sub">On waitlist</span>'
+        : (full && !isSel) ? '<span class="slot-sub">Full · tap to join waitlist</span>'
+        : (!isSel && !blocked && s.enrolled > 0) ? `<span class="slot-sub">${s.cap - s.enrolled} spots left</span>` : "";
+
+      const fp = s.cap > 0 ? Math.round(s.enrolled / s.cap * 100) : 0;
+      const perCap = cl.multi ? `<div class="slot-cap-row">
+        <div class="slot-cap-bar"><div class="slot-cap-fill" style="width:${s.enrolled > 0 ? fp : 0}%;background:${s.enrolled > 0 ? capColor(s.enrolled, s.cap) : "transparent"}"></div></div>
+        <span class="slot-cap-label">Max ${s.cap}</span>
+      </div>` : "";
+
+      const btn = document.createElement("button");
+      btn.className = cls;
+      btn.disabled = blocked || isWL;
+      btn.innerHTML = `<span class="slot-name">${s.time.trim()}</span>${grL}${note}${perCap}`;
+
+      if (isAvail && !blocked && !isWL) {
+        btn.onclick = () => {
+          if (isSel) { s.enrolled = Math.max(0, s.enrolled - 1); selected.delete(s.sid); renderCourseUI(); return; }
+          if (full) { openModal(s.sid); return; }
+          s.enrolled++;
+          selected.add(s.sid);
+          renderCourseUI();
+        };
+      }
+      slotList.appendChild(btn);
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+function renderSelSummary() {
+  const chips = v("selChips");
+  const wrap = v("dayBarsWrap");
+  if (!chips) return;
+
+  if (selected.size === 0 && waitlisted.size === 0) {
+    chips.innerHTML = '<span class="empty-note">No classes selected yet</span>';
+    if (wrap) wrap.style.display = "none";
+    return;
+  }
+
+  chips.innerHTML = "";
+  selected.forEach(sid => {
+    const cl = findClass(sid);
+    const sess = findSession(sid);
+    if (!cl || !sess) return;
+    const chip = document.createElement("span");
+    chip.className = "chip";
+    chip.innerHTML = `${cl.name} <span style="color:#9B9991;font-size:10px">${sess.time.trim()}</span> <span class="chip-rm" onclick="rmSlot('${sid}')">×</span>`;
+    chips.appendChild(chip);
+  });
+  waitlisted.forEach(sid => {
+    const cl = findClass(sid);
+    const sess = findSession(sid);
+    if (!cl || !sess) return;
+    const chip = document.createElement("span");
+    chip.className = "chip wl";
+    chip.innerHTML = `${cl.name} <span style="font-size:10px;opacity:0.8">Waitlist · ${sess.time.trim()}</span> <span class="chip-rm" onclick="rmSlot('${sid}')">×</span>`;
+    chips.appendChild(chip);
+  });
+
+  if (wrap) {
+    wrap.style.display = "block";
+    const bars = v("dayBars");
+    if (!bars) return;
+    bars.innerHTML = "";
+    const pct = t => ((t - MIN_T) / (MAX_T - MIN_T) * 100).toFixed(2) + "%";
+    const wid = (s, e) => ((e - s) / (MAX_T - MIN_T) * 100).toFixed(2) + "%";
+    DAY_ORDER.forEach(day => {
+      const daySessions = allSessions().filter(s => selected.has(s.sid) && s.days.includes(day));
+      if (!daySessions.length) return;
+      const row = document.createElement("div");
+      row.className = "day-row";
+      const tbar = document.createElement("div");
+      tbar.className = "tbar";
+      daySessions.forEach(s => {
+        s.ts.forEach(([st, en]) => {
+          const blk = document.createElement("div");
+          blk.className = "tblk";
+          blk.style.cssText = `left:${pct(st)};width:${wid(st,en)};background:${s.color}`;
+          const cl = findClass(s.sid);
+          blk.textContent = cl ? cl.name : "";
+          tbar.appendChild(blk);
+        });
+      });
+      row.innerHTML = `<span class="day-label">${day}</span>`;
+      row.appendChild(tbar);
+      bars.appendChild(row);
+    });
+  }
+}
+
+// ─── REVIEW ──────────────────────────────────────────────
+function buildReview() {
+  const rc = v("reviewContent");
+  if (!rc) return;
+  const sF = v("s-first").value.trim(), sL = v("s-last").value.trim();
+  const sG = v("s-grade").value, sSc = v("s-school").value.trim();
+  const pF = v("p-first").value.trim(), pL = v("p-last").value.trim();
+  const pE = v("p-email").value.trim(), pH = v("p-phone").value.trim();
+  const total = calcTotal();
+
+  let classRows = "";
+  selected.forEach(sid => {
+    const cl = findClass(sid); const sess = findSession(sid);
+    if (cl && sess) classRows += `
+      <div class="review-row">
+        <div><div>${cl.name}</div><div class="review-sub">${sess.time.trim()}${sess.gradeLabel ? " · " + sess.gradeLabel : ""}</div></div>
+        <div>$${cl.priceNum.toLocaleString()}</div>
+      </div>`;
+  });
+  waitlisted.forEach(sid => {
+    const cl = findClass(sid); const sess = findSession(sid);
+    if (cl && sess) classRows += `
+      <div class="review-row">
+        <div><div>${cl.name} <span style="font-size:11px;color:#BA7517">(Waitlist)</span></div><div class="review-sub">${sess.time.trim()}</div></div>
+        <div style="color:#9B9991">Pending</div>
+      </div>`;
+  });
+
+  rc.innerHTML = `
+    <div class="review-block" style="margin-bottom:10px">
+      <div class="review-hdr">Student</div>
+      <div class="review-row"><span class="lbl">Name</span><span>${sF} ${sL}</span></div>
+      <div class="review-row"><span class="lbl">Grade in Fall 2026</span><span>${sG}</span></div>
+      ${sSc ? `<div class="review-row"><span class="lbl">School</span><span>${sSc}</span></div>` : ""}
+    </div>
+    <div class="review-block" style="margin-bottom:10px">
+      <div class="review-hdr">Parent / guardian</div>
+      <div class="review-row"><span class="lbl">Name</span><span>${pF} ${pL}</span></div>
+      <div class="review-row"><span class="lbl">Email</span><span>${pE}</span></div>
+      <div class="review-row"><span class="lbl">Phone</span><span>${pH}</span></div>
+    </div>
+    <div class="review-block">
+      <div class="review-hdr">Selected classes</div>
+      ${classRows || '<div class="review-row" style="color:#9B9991">No classes selected</div>'}
+      <div class="review-row total"><span>Total due</span><span>$${total.toLocaleString()}</span></div>
+    </div>`;
+}
+
+// ─── PRINT PAGE ──────────────────────────────────────────
+function buildPrint() {
+  const pa = v("printArea");
+  if (!pa) return;
+  const sF = v("s-first").value.trim(), sL = v("s-last").value.trim();
+  const sG = v("s-grade").value, sSc = v("s-school").value.trim();
+  const pF = v("p-first").value.trim(), pL = v("p-last").value.trim();
+  const pE = v("p-email").value.trim(), pH = v("p-phone").value.trim();
+  const pRel = v("p-rel").value;
+  const today = new Date().toLocaleDateString("en-US", { year:"numeric", month:"long", day:"numeric" });
+  const total = calcTotal();
+
+  let classRows = "";
+  selected.forEach(sid => {
+    const cl = findClass(sid); const sess = findSession(sid);
+    if (cl && sess) classRows += `
+      <div class="print-row">
+        <div><span class="lbl">${cl.name}</span><br>${sess.time.trim()}${sess.gradeLabel ? " · " + sess.gradeLabel : ""}</div>
+        <div>$${cl.priceNum.toLocaleString()}</div>
+      </div>`;
+  });
+  waitlisted.forEach(sid => {
+    const cl = findClass(sid); const sess = findSession(sid);
+    if (cl && sess) classRows += `
+      <div class="print-row">
+        <div><span class="lbl">${cl.name}</span> <span style="color:#BA7517;font-size:11px">(Waitlist)</span><br>${sess.time.trim()}</div>
+        <div style="color:#9B9991">Pending</div>
+      </div>`;
+  });
+
+  pa.innerHTML = `
+    <div class="print-school">Learning Tree Walnut Education Center</div>
+    <div class="print-subtitle">2026 Summer Enrichment Club — Enrollment Confirmation · ${today}</div>
+    <div class="print-section">
+      <div class="print-section-title">Student</div>
+      <div class="print-row"><span class="lbl">Full name</span><div>${sF} ${sL}</div></div>
+      <div class="print-row"><span class="lbl">Grade in Fall 2026</span><div>${sG}</div></div>
+      ${sSc ? `<div class="print-row"><span class="lbl">School</span><div>${sSc}</div></div>` : ""}
+    </div>
+    <div class="print-section">
+      <div class="print-section-title">Parent / guardian</div>
+      <div class="print-row"><span class="lbl">Name</span><div>${pF} ${pL}${pRel ? " (" + pRel + ")" : ""}</div></div>
+      <div class="print-row"><span class="lbl">Email</span><div>${pE}</div></div>
+      <div class="print-row"><span class="lbl">Phone</span><div>${pH}</div></div>
+    </div>
+    <div class="print-section">
+      <div class="print-section-title">Enrolled classes</div>
+      ${classRows || '<div class="print-row" style="color:#9B9991">No classes selected</div>'}
+      <div class="print-total"><span>Total due</span><span>$${total.toLocaleString()}</span></div>
+    </div>
+    <div class="sig-grid">
+      <div class="sig-line">
+        Parent / guardian signature<span></span>
+        Date<span></span>
+      </div>
+      <div class="sig-line">
+        Office use only — payment received<span></span>
+        Staff initials<span></span>
+      </div>
+    </div>`;
+}
+
+// ─── RESET ───────────────────────────────────────────────
+function startOver() {
+  selected.clear(); waitlisted.clear(); week = 1; pendingSid = null;
+  SLOTS.forEach(cl => cl.sessions.forEach(s => { s.enrolled = 0; s.waitlist = 0; }));
+  ["s-first","s-last","s-school","p-first","p-last","p-email","p-phone"].forEach(id => { const el = v(id); if (el) el.value = ""; });
+  ["s-grade","p-rel"].forEach(id => { const el = v(id); if (el) el.selectedIndex = 0; });
+  goTo(0);
+}
+
+// ─── INIT ─────────────────────────────────────────────────
+renderProgress();
+</script>
+</body>
+</html>
