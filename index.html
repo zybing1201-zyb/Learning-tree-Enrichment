@@ -1,3 +1,8 @@
+bash
+
+cat /mnt/user-data/outputs/index.html
+Output
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -529,11 +534,11 @@ const SLOTS = [
     ]},
 
   { id:"travel", name:"Travel Writing", grade:"G3–G8", price:"$1,250 / 20 sessions", priceNum:1250,
-    color:"#888780", tagBg:"#F1EFE8", tagTx:"#444441", multi:false,
+    color:"#888780", tagBg:"#F1EFE8", tagTx:"#444441", multi:false, package:true,
     sessions:[{ sid:"travel-a", time:"Tue/Thu  3:30–5:30 pm", gradeLabel:"", days:["Tue","Thu"], ts:[[930,1050]], cap:10, enrolled:0, waitlist:0 }] },
 
   { id:"chorus", name:"Chorus", grade:"K–G8", price:"$240 / 12 sessions", priceNum:240,
-    color:"#E24B4A", tagBg:"#FCEBEB", tagTx:"#791F1F", multi:false,
+    color:"#E24B4A", tagBg:"#FCEBEB", tagTx:"#791F1F", multi:false, package:true,
     sessions:[{ sid:"chorus-a", time:"Fri  5:15–6:15 pm", gradeLabel:"", days:["Fri"], ts:[[1035,1095]], cap:20, enrolled:0, waitlist:0 }] }
 ];
 
@@ -574,11 +579,29 @@ function overlaps(t1, t2) {
 }
 function daysOverlap(d1, d2) { return d1.some(d => d2.includes(d)); }
 
-function isBlocked(sid, days, ts) {
+function isPackageCourse(sid) {
+  const cl = findClass(sid);
+  return cl && cl.package === true;
+}
+
+function isBlocked(sid, days, ts, currentWeek) {
+  const checkingPkg = isPackageCourse(sid);
+  const avail = WEEK_AVAIL[currentWeek] || [];
+  const checkCl = findClass(sid);
+
   for (const selSid of selected) {
     if (selSid === sid) continue;
     const s = findSession(selSid);
-    if (s && daysOverlap(days, s.days) && overlaps(ts, s.ts)) return true;
+    if (!s) continue;
+    const selPkg = isPackageCourse(selSid);
+    const selCl = findClass(selSid);
+
+    // Both are weekly: only conflict if BOTH available this week
+    if (!checkingPkg && !selPkg) {
+      if (!avail.includes(checkCl.id) || !avail.includes(selCl.id)) continue;
+    }
+    // At least one is package: always check overlap
+    if (daysOverlap(days, s.days) && overlaps(ts, s.ts)) return true;
   }
   return false;
 }
@@ -820,7 +843,7 @@ function renderCourseGrid() {
       const isSel = selected.has(s.sid);
       const isWL = waitlisted.has(s.sid);
       const full = s.enrolled >= s.cap;
-      const blocked = !isSel && !isWL && isBlocked(s.sid, s.days, s.ts);
+      const blocked = !isSel && !isWL && isBlocked(s.sid, s.days, s.ts, week);
 
       let cls = "slot-btn";
       if (isSel) cls += " selected";
