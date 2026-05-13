@@ -1,8 +1,10 @@
 bash
 
-cat /mnt/user-data/outputs/index.html
+wc -l /mnt/user-data/outputs/index.html && echo "---" && cat /mnt/user-data/outputs/index.html
 Output
 
+1073 /mnt/user-data/outputs/index.html
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,16 +59,14 @@ Output
   .btn.amber{background:var(--amber);border-color:var(--amber);color:#fff}
   .btn.amber:hover{background:#9e6210}
   .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;padding-top:1.25rem;border-top:var(--border)}
-
-  /* Week nav */
   .week-nav{display:flex;align-items:center;gap:5px;margin-bottom:1rem;flex-wrap:wrap}
   .wbtn{font-family:'DM Sans',sans-serif;font-size:12px;padding:4px 9px;border:var(--border);border-radius:var(--radius-sm);background:#fff;color:var(--gray-600);cursor:pointer;transition:all 0.15s}
   .wbtn.active{background:var(--gray-100);color:var(--gray-900);font-weight:500;border-color:var(--gray-400)}
-
-  /* Course grid */
   .course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;margin-bottom:1rem}
-  .course-card{border:var(--border);border-radius:var(--radius);padding:12px;background:#fff;transition:opacity 0.15s}
-  .course-card.unavail{opacity:0.3}
+  .course-card{border:var(--border);border-radius:var(--radius);padding:12px;background:#fff;transition:all 0.2s}
+  .course-card:hover:not(.unavail){border-color:var(--gray-400);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+  .course-card.unavail{opacity:0.25;filter:grayscale(100%)}
+  .course-card.has-selection{border-color:var(--green);box-shadow:0 0 0 2px rgba(29,158,117,0.12)}
   .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px}
   .ctag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;display:inline-block;line-height:1.6}
   .cap-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
@@ -76,12 +76,13 @@ Output
   .cgrade{font-size:11px;margin-bottom:5px}
   .cprice{font-size:11px;color:var(--gray-400);margin-bottom:8px}
   .slot-list{display:flex;flex-direction:column;gap:5px}
-  .slot-btn{font-family:'DM Sans',sans-serif;font-size:11px;padding:6px 8px;border:var(--border);border-radius:var(--radius-sm);background:#fff;color:var(--gray-900);cursor:pointer;text-align:left;line-height:1.5;transition:all 0.15s}
-  .slot-btn:hover:not(:disabled){background:var(--gray-50)}
-  .slot-btn.selected{border:1.5px solid var(--green);background:var(--green-light);color:var(--green-text)}
-  .slot-btn.blocked{opacity:0.22;cursor:not-allowed}
+  .slot-btn{font-family:'DM Sans',sans-serif;font-size:11px;padding:6px 8px;border:var(--border);border-radius:var(--radius-sm);background:#fff;color:var(--gray-900);cursor:pointer;text-align:left;line-height:1.5;transition:all 0.2s}
+  .slot-btn:hover:not(:disabled){background:var(--gray-50);border-color:var(--gray-400)}
+  .slot-btn.selected{border:2px solid var(--green);background:var(--green-light);color:var(--green-text);box-shadow:0 0 0 3px rgba(29,158,117,0.1)}
+  .slot-btn.selected .slot-name::before{content:"✓ ";font-weight:700}
+  .slot-btn.blocked{opacity:0.2;cursor:not-allowed;filter:grayscale(100%)}
   .slot-btn.full{background:var(--gray-50);color:var(--gray-400);cursor:not-allowed;border-color:var(--gray-200)}
-  .slot-btn.waitlisted{border:1.5px dashed var(--amber);background:var(--amber-light);color:#6b3e05}
+  .slot-btn.waitlisted{border:2px dashed var(--amber);background:var(--amber-light);color:#6b3e05}
   .slot-name{font-weight:500;display:block;margin-bottom:1px}
   .slot-sub{font-size:10px;opacity:0.75;display:block}
   .slot-cap-row{display:flex;align-items:center;gap:5px;margin-top:4px}
@@ -89,8 +90,6 @@ Output
   .slot-cap-fill{height:100%;border-radius:2px;transition:width 0.3s}
   .slot-cap-label{font-size:9px;color:var(--gray-400);white-space:nowrap}
   .unavail-note{font-size:10px;color:var(--gray-400);margin-top:6px;font-style:italic}
-
-  /* Selection summary */
   .sel-summary{background:var(--gray-50);border:var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:1rem}
   .sel-summary-title{font-size:11px;font-weight:500;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -102,35 +101,31 @@ Output
   .day-label{font-size:11px;color:var(--gray-600);font-weight:500}
   .tbar{position:relative;height:18px;background:var(--gray-100);border-radius:3px;overflow:hidden}
   .tblk{position:absolute;top:2px;height:14px;border-radius:2px;display:flex;align-items:center;padding:0 4px;font-size:9px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden}
-
-  /* Modal */
   .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:100;align-items:center;justify-content:center;padding:1rem}
   .modal-overlay.open{display:flex}
   .modal-box{background:#fff;border-radius:var(--radius);border:var(--border);padding:1.5rem;max-width:340px;width:100%}
   .modal-box h4{font-size:15px;font-weight:500;margin-bottom:6px}
   .modal-box p{font-size:13px;color:var(--gray-600);margin-bottom:1rem;line-height:1.55}
   .modal-btns{display:flex;gap:8px;justify-content:flex-end}
-
-  /* Review & print */
   .review-block{border:var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:12px}
   .review-hdr{background:var(--gray-50);padding:9px 14px;font-size:11px;font-weight:500;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.05em}
-  .review-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-top:var(--border);font-size:13px}
+  .review-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 14px;border-top:var(--border);font-size:13px;gap:8px}
   .review-row .lbl{color:var(--gray-600);font-size:12px}
-  .review-row.total{font-weight:600;background:var(--gray-50);font-size:14px}
-  .review-sub{font-size:11px;color:var(--gray-400)}
+  .review-row.total{font-weight:600;background:var(--gray-50);font-size:14px;align-items:center}
+  .review-sub{font-size:11px;color:var(--gray-400);margin-top:2px}
   .print-card{background:#fff;border:var(--border);border-radius:var(--radius);padding:1.75rem}
   .print-school{font-family:'DM Serif Display',serif;font-size:18px;color:var(--green-dark);margin-bottom:2px}
   .print-subtitle{font-size:12px;color:var(--gray-600);padding-bottom:1rem;margin-bottom:1rem;border-bottom:var(--border)}
   .print-section{margin-bottom:1.25rem}
   .print-section-title{font-size:11px;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;padding-bottom:4px;border-bottom:var(--border)}
-  .print-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0}
-  .print-row .lbl{color:var(--gray-600);font-size:12px}
+  .print-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;gap:8px;align-items:flex-start}
+  .print-row .lbl{color:var(--gray-600);font-size:12px;flex-shrink:0}
+  .print-row .detail{font-size:11px;color:var(--gray-400);margin-top:2px}
   .print-total{display:flex;justify-content:space-between;font-size:14px;font-weight:600;padding:10px 0;border-top:2px solid var(--gray-200);margin-top:4px}
   .sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1.5rem;padding-top:1rem;border-top:var(--border)}
   .sig-line{font-size:11px;color:var(--gray-400);line-height:2.2}
   .sig-line span{display:block;border-bottom:1px solid var(--gray-200);height:28px;margin-bottom:4px}
   .print-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
-
   @media print{
     body{background:#fff;padding:0}
     .site-header,.progress-wrap,.prog-labels,.print-actions,.nav-row{display:none!important}
@@ -153,6 +148,7 @@ Output
     <div class="progress-wrap" id="progressDots"></div>
     <div class="prog-labels" id="progressLabels"></div>
 
+    <!-- Page 0: Intro -->
     <div class="page active" id="page0">
       <div class="page-title">Welcome</div>
       <div class="page-sub">Complete enrollment in 4 easy steps. It takes about 3 minutes.</div>
@@ -161,13 +157,14 @@ Output
         · Most classes are enrolled by week — you can sign up for different classes each week.<br>
         · Travel Writing and Chorus are full-season packages and occupy their time slot every week.<br>
         · Some classes are divided by grade level — select the correct session for your child.<br>
-        · Enrollment is confirmed upon payment. Waitlisted spots are not guaranteed.
+        · If a class does not meet the minimum enrollment one week before the start date, it will be canceled, and a full refund will be issued.
       </div>
       <div style="display:flex;justify-content:flex-end">
         <button class="btn primary" onclick="goTo(1)">Get started &rarr;</button>
       </div>
     </div>
 
+    <!-- Page 1: Student -->
     <div class="page" id="page1">
       <div class="page-title">Student information</div>
       <div class="page-sub">Tell us about the child enrolling in summer enrichment.</div>
@@ -181,7 +178,15 @@ Output
           <select id="s-grade"><option value="">Select grade</option><option>TK</option><option>K</option><option>G1</option><option>G2</option><option>G3</option><option>G4</option><option>G5</option><option>G6</option><option>G7</option><option>G8</option></select>
           <span class="field-err" id="err-s-grade">Required</span>
         </div>
-        <div class="field"><label>School (optional)</label><input type="text" id="s-school" placeholder="School name"></div>
+        <div class="field">
+          <label>Student status *</label>
+          <select id="s-status">
+            <option value="">Select status</option>
+            <option value="registered">Registered LTW Summer Camp</option>
+            <option value="external">External Student (Not registered)</option>
+          </select>
+          <span class="field-err" id="err-s-status">Required</span>
+        </div>
       </div>
       <div class="nav-row">
         <button class="btn" onclick="goTo(0)">&larr; Back</button>
@@ -189,6 +194,7 @@ Output
       </div>
     </div>
 
+    <!-- Page 2: Parent -->
     <div class="page" id="page2">
       <div class="page-title">Parent / guardian contact</div>
       <div class="page-sub">We'll use this to confirm registration and send updates.</div>
@@ -208,6 +214,7 @@ Output
       </div>
     </div>
 
+    <!-- Page 3: Classes -->
     <div class="page" id="page3">
       <div class="page-title">Select classes</div>
       <div class="page-sub">Switch weeks to enroll class by class. Each week is independent. Package courses (Travel Writing, Chorus) apply to all weeks.</div>
@@ -227,6 +234,7 @@ Output
       </div>
     </div>
 
+    <!-- Page 4: Review -->
     <div class="page" id="page4">
       <div class="page-title">Review your registration</div>
       <div class="page-sub">Check all details before confirming.</div>
@@ -237,10 +245,14 @@ Output
       </div>
     </div>
 
+    <!-- Page 5: Print -->
     <div class="page" id="page5">
       <div class="print-actions">
         <div class="page-title" style="margin-bottom:0">Registration complete</div>
-        <button class="btn primary" onclick="window.print()">&#128438; Print / Save PDF</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+          <button class="btn" onclick="openEmailModal()" style="font-size:13px">&#9993; Send confirmation email</button>
+          <button class="btn primary" onclick="doPrint()" style="font-size:13px">&#128438; Print / Save PDF</button>
+        </div>
       </div>
       <div class="print-card" id="printArea"></div>
       <div style="text-align:center;margin-top:1.25rem">
@@ -254,10 +266,29 @@ Output
   <div class="modal-box" id="modalBox"></div>
 </div>
 
+<!-- Email modal -->
+<div class="modal-overlay" id="emailModalOverlay">
+  <div class="modal-box" style="max-width:380px">
+    <h4 style="margin-bottom:8px">Send confirmation email</h4>
+    <p style="font-size:13px;color:#5F5E5A;margin-bottom:12px;line-height:1.5">
+      Enter the email address(es) to send the enrollment confirmation to. You can add multiple addresses separated by commas.
+    </p>
+    <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:16px">
+      <label style="font-size:12px;font-weight:500;color:#5F5E5A">Email address(es) *</label>
+      <input type="email" id="send-email-input" placeholder="e.g. parent@email.com, spouse@email.com"
+        style="width:100%;font-family:'DM Sans',sans-serif;font-size:14px;padding:9px 12px;border:1px solid #E0DED8;border-radius:6px;outline:none"
+        onfocus="this.style.borderColor='#1D9E75'" onblur="this.style.borderColor='#E0DED8'">
+      <span style="font-size:11px;color:#E24B4A;display:none" id="email-modal-err">Please enter a valid email address</span>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn" onclick="closeEmailModal()">Cancel</button>
+      <button class="btn primary" onclick="sendEmail()">Send &#9993;</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ─── COURSE DEFINITIONS ───────────────────────────────────
-// package:true = full-season, conflicts across ALL weeks
-// package:false = weekly enrollment, conflicts only within same week
+// ─── COURSE DATA ─────────────────────────────────────────
 const SLOTS = [
   { id:"pilates", name:"Mat Pilates", grade:"K–G8", price:"$10 / session", priceNum:10,
     color:"#1D9E75", tagBg:"#E1F5EE", tagTx:"#085041", multi:false, package:false,
@@ -288,7 +319,7 @@ const SLOTS = [
   { id:"print3d", name:"3D Print", grade:"", price:"$96 / 2 sessions", priceNum:96,
     color:"#D4537E", tagBg:"#FBEAF0", tagTx:"#72243E", multi:true, package:false,
     sessions:[
-      { sid:"print3d-a", time:"Tue/Thu 3:00–4:30 pm", gradeLabel:"K–G2", days:["Tue","Thu"], ts:[[900,990]], cap:12 },
+      { sid:"print3d-a", time:"Tue/Thu 3:30–4:30 pm", gradeLabel:"K–G2", days:["Tue","Thu"], ts:[[930,990]], cap:12 },
       { sid:"print3d-b", time:"Tue/Thu 4:30–5:30 pm", gradeLabel:"G3–G8", days:["Tue","Thu"], ts:[[990,1050]], cap:12 }
     ]},
 
@@ -325,55 +356,70 @@ const DAY_ORDER = ["Mon","Tue","Wed","Thu","Fri"];
 const MIN_T = 900, MAX_T = 1095;
 
 // ─── STATE ────────────────────────────────────────────────
-// selected: Map of key -> {sid, week, status}
-// key = "sid__wk" for weekly, "sid" for package
-// Capacity tracking: Map of sid -> {enrolled, waitlist}
 let curPage = 0;
 let week = 1;
-const selections = new Map();  // key -> {sid, weekNum, clId, status:"enrolled"|"waitlist"}
-const capMap = new Map();      // sid -> {enrolled, waitlist}
 
-function initCap() {
-  capMap.clear();
-  SLOTS.forEach(cl => cl.sessions.forEach(s => capMap.set(s.sid, {enrolled:0, waitlist:0})));
-}
-initCap();
+// selections: Map of key -> {sid, weekNum, clId, status}
+// key = sid (package) or sid__wN (weekly)
+const selections = new Map();
 
-function getKey(sid, weekNum) {
+// capMap: Map of capKey -> {enrolled, waitlist}
+// capKey = sid (package) or sid__wN (weekly) — per week per slot
+const capMap = new Map();
+
+function getCapKey(sid, weekNum) {
   const cl = findClass(sid);
   return (cl && cl.package) ? sid : sid + "__w" + weekNum;
 }
 
+function getSelKey(sid, weekNum) {
+  return getCapKey(sid, weekNum);
+}
+
+function initCap() {
+  capMap.clear();
+  // Don't pre-populate — keys are created on demand
+}
+initCap();
+
+function getCapEntry(sid, weekNum) {
+  const key = getCapKey(sid, weekNum);
+  if (!capMap.has(key)) capMap.set(key, {enrolled:0, waitlist:0});
+  return capMap.get(key);
+}
+
 function isSelected(sid, weekNum) {
-  return selections.has(getKey(sid, weekNum));
+  return selections.has(getSelKey(sid, weekNum));
 }
 
 function isWaitlisted(sid, weekNum) {
-  const e = selections.get(getKey(sid, weekNum));
+  const e = selections.get(getSelKey(sid, weekNum));
   return e && e.status === "waitlist";
 }
 
 function addSelection(sid, weekNum, status) {
-  const key = getKey(sid, weekNum);
+  const key = getSelKey(sid, weekNum);
   const cl = findClass(sid);
   selections.set(key, {sid, weekNum: cl.package ? null : weekNum, clId: cl.id, status});
-  const cap = capMap.get(sid);
-  if (cap) {
-    if (status === "enrolled") cap.enrolled++;
-    else cap.waitlist++;
-  }
+  const cap = getCapEntry(sid, weekNum);
+  if (status === "enrolled") cap.enrolled++;
+  else cap.waitlist++;
 }
 
 function removeSelection(sid, weekNum) {
-  const key = getKey(sid, weekNum);
+  const key = getSelKey(sid, weekNum);
   const entry = selections.get(key);
   if (!entry) return;
-  const cap = capMap.get(sid);
-  if (cap) {
-    if (entry.status === "enrolled") cap.enrolled = Math.max(0, cap.enrolled - 1);
-    else cap.waitlist = Math.max(0, cap.waitlist - 1);
-  }
+  const cap = getCapEntry(sid, weekNum);
+  if (entry.status === "enrolled") cap.enrolled = Math.max(0, cap.enrolled - 1);
+  else cap.waitlist = Math.max(0, cap.waitlist - 1);
   selections.delete(key);
+}
+
+function isFull(sid, weekNum) {
+  const s = findSession(sid);
+  const cap = getCapEntry(sid, weekNum);
+  return cap.enrolled >= s.cap;
 }
 
 // ─── HELPERS ─────────────────────────────────────────────
@@ -390,36 +436,38 @@ function overlaps(t1, t2) {
 }
 function daysOverlap(d1, d2) { return d1.some(d => d2.includes(d)); }
 
-// Check if sid is blocked by existing selections in currentWeek
+// FIX: same-class different slots in same week should also conflict
 function isBlocked(sid, days, ts, currentWeek) {
   const checkCl = findClass(sid);
-  const avail = WEEK_AVAIL[currentWeek] || [];
 
   for (const [key, entry] of selections) {
     if (entry.sid === sid) continue;
-    if (entry.status === "waitlist") continue; // waitlist doesn't block
+    if (entry.status === "waitlist") continue;
 
     const s = findSession(entry.sid);
     if (!s) continue;
     const selCl = findClass(entry.sid);
     if (!selCl) continue;
 
-    // Both are weekly courses: only conflict if both are in the SAME week
+    // Both weekly: only conflict in same week
     if (!checkCl.package && !selCl.package) {
-      const entryWeek = entry.weekNum;
-      if (entryWeek !== currentWeek) continue; // different week = no conflict
+      if (entry.weekNum !== currentWeek) continue;
     }
 
-    // Time overlap check (package vs anything, or same week weekly vs weekly)
     if (daysOverlap(days, s.days) && overlaps(ts, s.ts)) return true;
   }
   return false;
 }
 
-function isFull(sid) {
-  const s = findSession(sid);
-  const cap = capMap.get(sid);
-  return cap && cap.enrolled >= s.cap;
+// FIX: within same course (multi-slot), selecting one slot blocks the other in same week
+function isSiblingBlocked(sid, currentWeek) {
+  const cl = findClass(sid);
+  if (!cl || !cl.multi || cl.package) return false;
+  for (const s of cl.sessions) {
+    if (s.sid === sid) continue;
+    if (isSelected(s.sid, currentWeek)) return true;
+  }
+  return false;
 }
 
 function capColor(e, c) {
@@ -428,17 +476,15 @@ function capColor(e, c) {
 }
 
 function calcTotal() {
-  const counted = new Set();
+  const countedPkg = new Set();
   let t = 0;
   for (const [key, entry] of selections) {
     if (entry.status !== "enrolled") continue;
     const cl = findClass(entry.sid);
     if (!cl) continue;
-    // Package: count once
     if (cl.package) {
-      if (!counted.has(cl.id)) { counted.add(cl.id); t += cl.priceNum; }
+      if (!countedPkg.has(cl.id)) { countedPkg.add(cl.id); t += cl.priceNum; }
     } else {
-      // Weekly: count once per week per class
       t += cl.priceNum;
     }
   }
@@ -484,25 +530,135 @@ function setErr(id, show) {
   if (inp) inp.classList.toggle("err", show);
   if (err) err.classList.toggle("show", show);
 }
+
 function validateStep1() {
-  const f=v("s-first").value.trim(), l=v("s-last").value.trim(), g=v("s-grade").value;
-  setErr("s-first",!f); setErr("s-last",!l); setErr("s-grade",!g);
-  if (f&&l&&g) goTo(2);
+  const f=v("s-first").value.trim(), l=v("s-last").value.trim();
+  const g=v("s-grade").value, st=v("s-status").value;
+  setErr("s-first",!f); setErr("s-last",!l);
+  setErr("s-grade",!g); setErr("s-status",!st);
+  if (f&&l&&g&&st) goTo(2);
 }
+
 function validateStep2() {
   const f=v("p-first").value.trim(), l=v("p-last").value.trim();
   const e=v("p-email").value.trim(), ph=v("p-phone").value.trim();
   const eok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
-  setErr("p-first",!f); setErr("p-last",!l); setErr("p-email",!eok); setErr("p-phone",!ph);
+  setErr("p-first",!f); setErr("p-last",!l);
+  setErr("p-email",!eok); setErr("p-phone",!ph);
   if (f&&l&&eok&&ph) goTo(3);
 }
+
 function validateStep3() {
   if (selections.size === 0) { alert("Please select at least one class before continuing."); return; }
   goTo(4);
 }
 
+// ─── PRINT ───────────────────────────────────────────────
+function buildEmailBody() {
+  const sF=v("s-first").value.trim(), sL=v("s-last").value.trim();
+  const sG=v("s-grade").value;
+  const statusMap = {"registered":"Registered LTW Summer Camp","external":"External Student"};
+  const sSt = statusMap[v("s-status").value] || "";
+  const pF=v("p-first").value.trim(), pL=v("p-last").value.trim();
+  const pEmail=v("p-email").value.trim(), pH=v("p-phone").value.trim();
+  const total=calcTotal();
+  let classLines = "";
+  getSortedEntries().forEach(entry => {
+    const cl=findClass(entry.sid), sess=findSession(entry.sid);
+    if(!cl||!sess) return;
+    const weekLabel = cl.package ? "Full season" : "Week "+entry.weekNum;
+    const price = entry.status==="enrolled" ? "$"+cl.priceNum.toLocaleString() : "Waitlist";
+    classLines += `  - ${cl.name} | ${sess.time.trim()}${sess.gradeLabel?" ("+sess.gradeLabel+")":""} | ${weekLabel} | ${price}\n`;
+  });
+  return {
+    subject: "Learning Tree 2026 Summer Enrichment — Registration Confirmation",
+    body:
+`Learning Tree Walnut Education Center
+2026 Summer Enrichment Club — Enrollment Confirmation
+${submitDateTime}
+Confirmation Code: ${confirmCode}
+
+STUDENT
+Name: ${sF} ${sL}
+Grade in Fall 2026: ${sG}
+Student status: ${sSt}
+
+PARENT / GUARDIAN
+Name: ${pF} ${pL}
+Email: ${pEmail}
+Phone: ${pH}
+
+ENROLLED CLASSES
+${classLines}
+Total due: $${total.toLocaleString()}
+
+---
+Please keep this email as your enrollment record.
+For questions, contact Learning Tree Walnut Education Center.`
+  };
+}
+
+function openEmailModal() {
+  const pEmail = v("p-email").value.trim();
+  const input = v("send-email-input");
+  if (input) input.value = pEmail; // pre-fill with parent's email
+  v("email-modal-err").style.display = "none";
+  v("emailModalOverlay").classList.add("open");
+  setTimeout(() => { if(input) input.focus(); }, 100);
+}
+
+function closeEmailModal() {
+  v("emailModalOverlay").classList.remove("open");
+}
+
+function sendEmail() {
+  const input = v("send-email-input");
+  const errEl = v("email-modal-err");
+  const val = input.value.trim();
+  if (!val) { errEl.style.display="block"; errEl.textContent="Please enter an email address"; return; }
+  // Basic validation for all addresses
+  const addrs = val.split(",").map(s=>s.trim()).filter(Boolean);
+  const allValid = addrs.every(a => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a));
+  if (!allValid) { errEl.style.display="block"; errEl.textContent="Please enter valid email address(es)"; return; }
+  errEl.style.display="none";
+  const {subject, body} = buildEmailBody();
+  const to = addrs.join(",");
+  window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  closeEmailModal();
+}
+
+// Close email modal on overlay click
+v("emailModalOverlay").addEventListener("click", e => { if(e.target===v("emailModalOverlay")) closeEmailModal(); });
+
+function doPrint() {
+  if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    alert("To save as PDF on iPhone:\n1. Tap the Share button in Safari\n2. Scroll down and tap \"Print\"\n3. Pinch outward on the preview\n4. Tap the Share icon → Save to Files");
+  } else if (/Android/i.test(navigator.userAgent)) {
+    alert("To save as PDF on Android:\n1. Tap the browser menu (⋮)\n2. Tap \"Print\"\n3. Change destination to \"Save as PDF\"\n4. Tap Save");
+  } else {
+    window.print();
+  }
+}
+
 // ─── SUBMIT ──────────────────────────────────────────────
+// Generate confirmation code: FirstnameLastname-XXX
+function generateConfirmCode() {
+  const fName = v("s-first").value.trim().replace(/\s+/g,"");
+  const lName = v("s-last").value.trim().replace(/\s+/g,"");
+  const num = String(Math.floor(100 + Math.random() * 900));
+  return fName + lName + "-" + num;
+}
+
+let confirmCode = "";
+let submitDateTime = "";
+
 function submitAndPrint() {
+  // Generate code and timestamp at moment of submission
+  confirmCode = generateConfirmCode();
+  const now = new Date();
+  submitDateTime = now.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})
+    + " · " + now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+
   const APPS_SCRIPT_URL = "";
   if (APPS_SCRIPT_URL) {
     fetch(APPS_SCRIPT_URL, {
@@ -516,53 +672,87 @@ function submitAndPrint() {
 
 function buildPayload() {
   const classes = [];
-  for (const [key, entry] of selections) {
-    const cl = findClass(entry.sid);
-    const sess = findSession(entry.sid);
+  const entries = getSortedEntries();
+  entries.forEach(entry => {
+    const cl = findClass(entry.sid), sess = findSession(entry.sid);
     if (cl && sess) classes.push({
-      name: cl.name, time: sess.time, grade: sess.gradeLabel,
-      week: entry.weekNum ? "Week " + entry.weekNum : "Full season",
+      name: cl.name,
+      time: sess.time.trim(),
+      gradeLabel: sess.gradeLabel,
+      week: cl.package ? "Full season" : "Week " + entry.weekNum,
       price: entry.status === "enrolled" ? cl.priceNum : 0,
       status: entry.status
     });
-  }
+  });
+  const statusMap = {"registered":"Registered LTW Summer Camp","external":"External Student"};
   return {
     timestamp: new Date().toISOString(),
-    student: { firstName:v("s-first").value.trim(), lastName:v("s-last").value.trim(), grade:v("s-grade").value, school:v("s-school").value.trim() },
-    parent: { firstName:v("p-first").value.trim(), lastName:v("p-last").value.trim(), email:v("p-email").value.trim(), phone:v("p-phone").value.trim(), relationship:v("p-rel").value },
-    classes, totalDue: calcTotal()
+    confirmCode: confirmCode,
+    submitDateTime: submitDateTime,
+    student: {
+      firstName: v("s-first").value.trim(),
+      lastName: v("s-last").value.trim(),
+      grade: v("s-grade").value,
+      status: statusMap[v("s-status").value] || v("s-status").value
+    },
+    parent: {
+      firstName: v("p-first").value.trim(),
+      lastName: v("p-last").value.trim(),
+      email: v("p-email").value.trim(),
+      phone: v("p-phone").value.trim(),
+      relationship: v("p-rel").value
+    },
+    classes,
+    totalDue: calcTotal()
   };
+}
+
+function getSortedEntries() {
+  return [...selections.values()].sort((a,b) => {
+    const aCl = findClass(a.sid), bCl = findClass(b.sid);
+    if (aCl.package && !bCl.package) return -1;
+    if (!aCl.package && bCl.package) return 1;
+    return (a.weekNum||0) - (b.weekNum||0);
+  });
 }
 
 // ─── MODAL ───────────────────────────────────────────────
 let pendingSid = null, pendingWeek = null;
+
 function openModal(sid, wk) {
   pendingSid = sid; pendingWeek = wk;
   const cl = findClass(sid), sess = findSession(sid);
-  const cap = capMap.get(sid);
+  const cap = getCapEntry(sid, wk);
   v("modalBox").innerHTML = `
     <h4>This class is full</h4>
-    <p><strong>${cl.name}</strong><br>${sess.time.trim()}${sess.gradeLabel?" · "+sess.gradeLabel:""}<br>
-    ${cl.package?"Full season":"Week "+wk}<br><br>Max ${sess.cap} students · ${cap?cap.waitlist:0} already on waitlist.</p>
+    <p><strong>${cl.name}</strong><br>
+    ${sess.time.trim()}${sess.gradeLabel?" · "+sess.gradeLabel:""}<br>
+    ${cl.package?"Full season":"Week "+wk}<br><br>
+    Max ${sess.cap} students · ${cap.waitlist} already on waitlist.</p>
     <div class="modal-btns">
       <button class="btn" onclick="closeModal()">Cancel</button>
       <button class="btn amber" onclick="joinWaitlist()">Join waitlist</button>
     </div>`;
   v("modalOverlay").classList.add("open");
 }
-function closeModal() { v("modalOverlay").classList.remove("open"); pendingSid=null; pendingWeek=null; }
+
+function closeModal() {
+  v("modalOverlay").classList.remove("open");
+  pendingSid = null; pendingWeek = null;
+}
+
 function joinWaitlist() {
   if (!pendingSid) return;
   addSelection(pendingSid, pendingWeek, "waitlist");
   closeModal(); renderCourseUI();
 }
+
 v("modalOverlay").addEventListener("click", e => { if (e.target===v("modalOverlay")) closeModal(); });
 
-// ─── REMOVE SELECTION ────────────────────────────────────
 function rmEntry(key) {
   const entry = selections.get(key);
   if (!entry) return;
-  removeSelection(entry.sid, entry.weekNum || week);
+  removeSelection(entry.sid, entry.weekNum);
   renderCourseUI();
 }
 
@@ -589,11 +779,11 @@ function renderCourseGrid() {
   SLOTS.forEach(cl => {
     const isAvail = avail.includes(cl.id);
     const s0 = cl.sessions[0];
-    const cap0 = capMap.get(s0.sid) || {enrolled:0};
+    const cap0 = getCapEntry(s0.sid, week);
     const card = document.createElement("div");
-    card.className = "course-card"+(isAvail?"":" unavail");
+    const hasAnySel = cl.sessions.some(s => isSelected(s.sid, week) || isWaitlisted(s.sid, week));
+    card.className = "course-card"+(isAvail?"":" unavail")+(hasAnySel?" has-selection":"");
 
-    // Package badge
     const pkgBadge = cl.package
       ? `<span style="font-size:10px;background:#F1EFE8;color:#5F5E5A;padding:1px 6px;border-radius:10px;margin-left:5px">Full season</span>`
       : "";
@@ -620,11 +810,15 @@ function renderCourseGrid() {
 
     const slotList = card.querySelector(`#slots-${cl.id}`);
     cl.sessions.forEach(s => {
-      const cap = capMap.get(s.sid) || {enrolled:0, waitlist:0};
+      const cap = getCapEntry(s.sid, week);
       const isSel = isSelected(s.sid, week);
       const isWL = isWaitlisted(s.sid, week);
-      const full = isFull(s.sid);
-      const blocked = !isSel && !isWL && isBlocked(s.sid, s.days, s.ts, week);
+      const full = isFull(s.sid, week);
+
+      // Block if: time conflict OR sibling slot in same course already selected
+      const sibBlocked = !isSel && !isWL && isSiblingBlocked(s.sid, week);
+      const timeBlocked = !isSel && !isWL && isBlocked(s.sid, s.days, s.ts, week);
+      const blocked = sibBlocked || timeBlocked;
 
       let cls = "slot-btn";
       if (isSel) cls += " selected";
@@ -670,19 +864,17 @@ function renderSelSummary() {
     if (wrap) wrap.style.display = "none";
     return;
   }
-
   chips.innerHTML = "";
-  // Group by class for display
-  for (const [key, entry] of selections) {
-    const cl = findClass(entry.sid);
-    const sess = findSession(entry.sid);
-    if (!cl||!sess) continue;
+  getSortedEntries().forEach(entry => {
+    const cl = findClass(entry.sid), sess = findSession(entry.sid);
+    if (!cl||!sess) return;
     const chip = document.createElement("span");
     chip.className = "chip"+(entry.status==="waitlist"?" wl":"");
     const weekLabel = cl.package ? "Full season" : "Wk "+entry.weekNum;
+    const key = getSelKey(entry.sid, entry.weekNum);
     chip.innerHTML = `${cl.name} <span style="color:#9B9991;font-size:10px">${weekLabel}</span>${entry.status==="waitlist"?'<span style="font-size:10px;color:#BA7517"> · Waitlist</span>':""} <span class="chip-rm" onclick="rmEntry('${key}')">×</span>`;
     chips.appendChild(chip);
-  }
+  });
 
   if (wrap) {
     wrap.style.display = "block";
@@ -690,14 +882,11 @@ function renderSelSummary() {
     bars.innerHTML = "";
     const pct = t => ((t-MIN_T)/(MAX_T-MIN_T)*100).toFixed(2)+"%";
     const wid = (s,e) => ((e-s)/(MAX_T-MIN_T)*100).toFixed(2)+"%";
-    // Show current week's schedule
     DAY_ORDER.forEach(day => {
       const daySess = [];
       for (const [key, entry] of selections) {
         if (entry.status !== "enrolled") continue;
-        const cl = findClass(entry.sid);
-        if (!cl) continue;
-        // Show if package OR matches current week
+        const cl = findClass(entry.sid); if (!cl) continue;
         if (cl.package || entry.weekNum === week) {
           const s = findSession(entry.sid);
           if (s && s.days.includes(day)) daySess.push({s, color:cl.color, name:cl.name});
@@ -706,7 +895,7 @@ function renderSelSummary() {
       if (!daySess.length) return;
       const row = document.createElement("div"); row.className = "day-row";
       const tbar = document.createElement("div"); tbar.className = "tbar";
-      daySess.forEach(({s, color, name}) => {
+      daySess.forEach(({s,color,name}) => {
         s.ts.forEach(([st,en]) => {
           const blk = document.createElement("div"); blk.className = "tblk";
           blk.style.cssText = `left:${pct(st)};width:${wid(st,en)};background:${color}`;
@@ -723,39 +912,46 @@ function renderSelSummary() {
 function buildReview() {
   const rc = v("reviewContent"); if (!rc) return;
   const sF=v("s-first").value.trim(), sL=v("s-last").value.trim();
-  const sG=v("s-grade").value, sSc=v("s-school").value.trim();
+  const sG=v("s-grade").value;
+  const statusMap = {"registered":"Registered LTW Summer Camp","external":"External Student"};
+  const sSt = statusMap[v("s-status").value] || "";
   const pF=v("p-first").value.trim(), pL=v("p-last").value.trim();
   const pE=v("p-email").value.trim(), pH=v("p-phone").value.trim();
   const total = calcTotal();
 
-  // Group selections: package shown once, weekly shown per week
   let classRows = "";
-  const packages = new Set();
-  // Sort entries: packages first, then by week
-  const entries = [...selections.values()].sort((a,b) => {
-    const aCl = findClass(a.sid), bCl = findClass(b.sid);
-    if (aCl.package && !bCl.package) return -1;
-    if (!aCl.package && bCl.package) return 1;
-    return (a.weekNum||0) - (b.weekNum||0);
-  });
-
-  entries.forEach(entry => {
+  getSortedEntries().forEach(entry => {
     const cl = findClass(entry.sid), sess = findSession(entry.sid);
     if (!cl||!sess) return;
     const weekLabel = cl.package ? "Full season (all weeks)" : "Week "+entry.weekNum;
-    const priceLabel = entry.status==="enrolled" ? "$"+cl.priceNum.toLocaleString() : '<span style="color:#BA7517">Waitlist</span>';
+    const priceLabel = entry.status==="enrolled"
+      ? "$"+cl.priceNum.toLocaleString()
+      : '<span style="color:#BA7517">Waitlist</span>';
     classRows += `<div class="review-row">
-      <div><div>${cl.name}</div><div class="review-sub">${sess.time.trim()}${sess.gradeLabel?" · "+sess.gradeLabel:""} · ${weekLabel}</div></div>
-      <div>${priceLabel}</div>
+      <div>
+        <div>${cl.name}</div>
+        <div class="review-sub">${sess.time.trim()}${sess.gradeLabel?" · "+sess.gradeLabel:""} · ${weekLabel}</div>
+      </div>
+      <div style="flex-shrink:0">${priceLabel}</div>
     </div>`;
   });
 
   rc.innerHTML = `
+    <div style="background:var(--green-light);border:1.5px solid var(--green);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--green-text);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px">Confirmation code</div>
+        <div style="font-size:18px;font-weight:600;color:var(--green-dark);letter-spacing:0.05em">${confirmCode}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:var(--green-text);margin-bottom:2px">Submitted</div>
+        <div style="font-size:12px;font-weight:500;color:var(--green-dark)">${submitDateTime}</div>
+      </div>
+    </div>
     <div class="review-block" style="margin-bottom:10px">
       <div class="review-hdr">Student</div>
       <div class="review-row"><span class="lbl">Name</span><span>${sF} ${sL}</span></div>
       <div class="review-row"><span class="lbl">Grade in Fall 2026</span><span>${sG}</span></div>
-      ${sSc?`<div class="review-row"><span class="lbl">School</span><span>${sSc}</span></div>`:""}
+      <div class="review-row"><span class="lbl">Student status</span><span>${sSt}</span></div>
     </div>
     <div class="review-block" style="margin-bottom:10px">
       <div class="review-hdr">Parent / guardian</div>
@@ -770,54 +966,99 @@ function buildReview() {
     </div>`;
 }
 
-// ─── PRINT ───────────────────────────────────────────────
+// ─── PRINT PAGE ──────────────────────────────────────────
 function buildPrint() {
   const pa = v("printArea"); if (!pa) return;
   const sF=v("s-first").value.trim(), sL=v("s-last").value.trim();
-  const sG=v("s-grade").value, sSc=v("s-school").value.trim();
+  const sG=v("s-grade").value;
+  const statusMap = {"registered":"Registered LTW Summer Camp","external":"External Student"};
+  const sSt = statusMap[v("s-status").value] || "";
   const pF=v("p-first").value.trim(), pL=v("p-last").value.trim();
   const pE=v("p-email").value.trim(), pH=v("p-phone").value.trim();
   const pRel=v("p-rel").value;
-  const today=new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
   const total=calcTotal();
 
-  let classRows="";
-  const entries=[...selections.values()].sort((a,b)=>{
-    const aCl=findClass(a.sid),bCl=findClass(b.sid);
-    if(aCl.package&&!bCl.package)return -1;
-    if(!aCl.package&&bCl.package)return 1;
-    return(a.weekNum||0)-(b.weekNum||0);
+  let enrolledRows="", waitlistRows="";
+  getSortedEntries().forEach(entry=>{
+    const cl=findClass(entry.sid), sess=findSession(entry.sid);
+    if(!cl||!sess) return;
+    const weekLabel = cl.package ? "Full season" : "Week "+entry.weekNum;
+    const timeDetail = `${sess.time.trim()}${sess.gradeLabel?" · "+sess.gradeLabel:""} · ${weekLabel}`;
+    if (entry.status==="enrolled") {
+      enrolledRows+=`<div class="print-row">
+        <div><div>${cl.name}</div><div class="detail">${timeDetail}</div></div>
+        <div style="flex-shrink:0">$${cl.priceNum.toLocaleString()}</div>
+      </div>`;
+    } else {
+      waitlistRows+=`<div class="print-row">
+        <div><div>${cl.name}</div><div class="detail">${timeDetail}</div></div>
+        <div style="flex-shrink:0;font-size:11px;color:#BA7517">Pending</div>
+      </div>`;
+    }
   });
-  entries.forEach(entry=>{
-    const cl=findClass(entry.sid),sess=findSession(entry.sid);
-    if(!cl||!sess)return;
-    const weekLabel=cl.package?"Full season":"Week "+entry.weekNum;
-    classRows+=`<div class="print-row">
-      <div><span class="lbl">${cl.name}</span>${entry.status==="waitlist"?' <span style="color:#BA7517;font-size:11px">(Waitlist)</span>':""}<br>${sess.time.trim()}${sess.gradeLabel?" · "+sess.gradeLabel:""} · ${weekLabel}</div>
-      <div>${entry.status==="enrolled"?"$"+cl.priceNum.toLocaleString():"Pending"}</div>
-    </div>`;
-  });
+
+  const waitlistSection = waitlistRows ? `
+    <div class="print-section">
+      <div class="print-section-title" style="color:#BA7517">Waitlist</div>
+      ${waitlistRows}
+      <div style="font-size:11px;color:#888780;margin-top:6px;font-style:italic">
+        Waitlisted classes are not guaranteed. Office will contact you if a spot becomes available.
+      </div>
+    </div>` : "";
 
   pa.innerHTML=`
     <div class="print-school">Learning Tree Walnut Education Center</div>
-    <div class="print-subtitle">2026 Summer Enrichment Club — Enrollment Confirmation · ${today}</div>
+    <div class="print-subtitle">2026 Summer Enrichment Club — Enrollment Confirmation · ${submitDateTime}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;background:var(--green-light);border-radius:6px;padding:8px 12px;margin-bottom:1rem">
+      <div>
+        <div style="font-size:10px;font-weight:600;color:var(--green-text);text-transform:uppercase;letter-spacing:0.05em">Confirmation Code</div>
+        <div style="font-size:16px;font-weight:700;color:var(--green-dark);letter-spacing:0.05em">${confirmCode}</div>
+      </div>
+      <div style="font-size:11px;color:var(--green-text);text-align:right">
+        Please keep this code<br>for your records
+      </div>
+    </div>
+
     <div class="print-section">
       <div class="print-section-title">Student</div>
       <div class="print-row"><span class="lbl">Full name</span><div>${sF} ${sL}</div></div>
       <div class="print-row"><span class="lbl">Grade in Fall 2026</span><div>${sG}</div></div>
-      ${sSc?`<div class="print-row"><span class="lbl">School</span><div>${sSc}</div></div>`:""}
+      <div class="print-row"><span class="lbl">Student status</span><div>${sSt}</div></div>
     </div>
+
     <div class="print-section">
       <div class="print-section-title">Parent / guardian</div>
       <div class="print-row"><span class="lbl">Name</span><div>${pF} ${pL}${pRel?" ("+pRel+")":""}</div></div>
       <div class="print-row"><span class="lbl">Email</span><div>${pE}</div></div>
       <div class="print-row"><span class="lbl">Phone</span><div>${pH}</div></div>
     </div>
+
     <div class="print-section">
       <div class="print-section-title">Enrolled classes</div>
-      ${classRows||'<div class="print-row" style="color:#9B9991">No classes selected</div>'}
+      ${enrolledRows||'<div class="print-row" style="color:#9B9991">No classes selected</div>'}
       <div class="print-total"><span>Total due</span><span>$${total.toLocaleString()}</span></div>
     </div>
+
+    ${waitlistSection}
+
+    <div class="print-section" style="background:#F8F8F7;border-radius:8px;padding:12px 14px;margin-top:8px">
+      <div class="print-section-title" style="border-bottom:1px solid #E0DED8;padding-bottom:6px;margin-bottom:10px">Payment information</div>
+      <div style="font-size:12px;color:#1C1C1A;line-height:1.8">
+        <div style="margin-bottom:6px">Registration is confirmed only after the completed form is submitted and <strong>full payment is received</strong>.</div>
+        <div style="font-weight:600;margin-bottom:4px">Accepted Payment Methods:</div>
+        <div>&nbsp;&nbsp;• Cash</div>
+        <div>&nbsp;&nbsp;• Check</div>
+        <div>&nbsp;&nbsp;• Zelle: <strong>Ltwalnutparents@gmail.com</strong></div>
+        <div style="margin-top:8px;padding:8px 10px;background:#EBF4FF;border-radius:6px;color:#0C447C">
+          <strong>Payment Instructions:</strong> When submitting payment, please include your
+          <strong>child's full name + Enrichment class name</strong> in the payment notes for accurate processing.
+        </div>
+        <div style="margin-top:8px;padding:8px 10px;background:#FCEBEB;border-radius:6px;color:#791F1F">
+          <strong>No refund</strong> is given for any reason if you cancel after the enrichment class starts.
+        </div>
+      </div>
+    </div>
+
     <div class="sig-grid">
       <div class="sig-line">Parent / guardian signature<span></span>Date<span></span></div>
       <div class="sig-line">Office use only — payment received<span></span>Staff initials<span></span></div>
@@ -825,10 +1066,11 @@ function buildPrint() {
 }
 
 // ─── RESET ───────────────────────────────────────────────
+// ─── RESET ───────────────────────────────────────────────
 function startOver() {
   selections.clear(); initCap(); week=1; pendingSid=null; pendingWeek=null;
-  ["s-first","s-last","s-school","p-first","p-last","p-email","p-phone"].forEach(id=>{const el=v(id);if(el)el.value="";});
-  ["s-grade","p-rel"].forEach(id=>{const el=v(id);if(el)el.selectedIndex=0;});
+  ["s-first","s-last","p-first","p-last","p-email","p-phone"].forEach(id=>{const el=v(id);if(el)el.value="";});
+  ["s-grade","s-status","p-rel"].forEach(id=>{const el=v(id);if(el)el.selectedIndex=0;});
   goTo(0);
 }
 
@@ -836,3 +1078,4 @@ renderProgress();
 </script>
 </body>
 </html>
+Done
