@@ -621,12 +621,11 @@ function sendEmail() {
 v("emailModalOverlay").addEventListener("click", e => { if(e.target===v("emailModalOverlay")) closeEmailModal(); });
 
 function doPrint() {
-  if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    alert("To save as PDF on iPhone:\n1. Tap the Share button in Safari\n2. Scroll down and tap \"Print\"\n3. Pinch outward on the preview\n4. Tap the Share icon → Save to Files");
-  } else if (/Android/i.test(navigator.userAgent)) {
-    alert("To save as PDF on Android:\n1. Tap the browser menu (⋮)\n2. Tap \"Print\"\n3. Change destination to \"Save as PDF\"\n4. Tap Save");
-  } else {
+  // Direct call to window.print() - works on iOS Safari, Android Chrome, and desktop
+  try {
     window.print();
+  } catch(e) {
+    alert("To save as PDF: use your browser's Share or Menu button and select \"Print\" or \"Save as PDF\".");
   }
 }
 
