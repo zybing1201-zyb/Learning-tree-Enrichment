@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Learning Tree 2026 Summer Enrichment — Registration</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root {
     --green:#1D9E75;--green-dark:#0F6E56;--green-light:#E1F5EE;--green-text:#085041;
@@ -621,11 +622,24 @@ function sendEmail() {
 v("emailModalOverlay").addEventListener("click", e => { if(e.target===v("emailModalOverlay")) closeEmailModal(); });
 
 function doPrint() {
-  // Direct call to window.print() - works on iOS Safari, Android Chrome, and desktop
-  try {
-    window.print();
-  } catch(e) {
-    alert("To save as PDF: use your browser's Share or Menu button and select \"Print\" or \"Save as PDF\".");
+  const element = document.getElementById('printArea');
+  const studentName = (v("s-first").value.trim() + "_" + v("s-last").value.trim()).replace(/\s+/g, "_");
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename: 'LTW_Enrollment_' + studentName + '_' + confirmCode + '.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  
+  if (typeof html2pdf !== 'undefined') {
+    html2pdf().set(opt).from(element).save();
+  } else {
+    try {
+      window.print();
+    } catch(e) {
+      alert("To save as PDF: use your browser's Share or Menu button and select \"Print\" or \"Save as PDF\".");
+    }
   }
 }
 
