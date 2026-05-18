@@ -283,7 +283,7 @@
 const SLOTS = [
   { id:"pilates", name:"Mat Pilates", grade:"K–G8", price:"$10 / session", priceNum:10,
     color:"#1D9E75", tagBg:"#E1F5EE", tagTx:"#085041", multi:false, package:false,
-    sessions:[{ sid:"pilates-a", time:"Mon 4:00–5:00 pm", gradeLabel:"", days:["Mon"], ts:[[960,1020]], cap:20 }] },
+    sessions:[{ sid:"pilates-a", time:"Mon 5:00–6:00 pm", gradeLabel:"", days:["Mon"], ts:[[1020,1080]], cap:20 }] },
 
   { id:"golf", name:"Golf", grade:"G1–G8", price:"$180 / 4 sessions", priceNum:180,
     color:"#639922", tagBg:"#EAF3DE", tagTx:"#27500A", multi:false, package:false,
@@ -466,7 +466,14 @@ function capColor(e, c) {
   return r >= 1 ? "#E24B4A" : r >= 0.8 ? "#BA7517" : "#1D9E75";
 }
 
-function calcTotal() {
+const EXTERNAL_FEE = 20;
+
+function isExternalStudent() {
+  const el = v("s-status");
+  return el && el.value === "external";
+}
+
+function calcClassesTotal() {
   const countedPkg = new Set();
   let t = 0;
   for (const [key, entry] of selections) {
@@ -479,6 +486,12 @@ function calcTotal() {
       t += cl.priceNum;
     }
   }
+  return t;
+}
+
+function calcTotal() {
+  let t = calcClassesTotal();
+  if (isExternalStudent() && t > 0) t += EXTERNAL_FEE;
   return t;
 }
 
@@ -965,6 +978,11 @@ function buildReview() {
     <div class="review-block">
       <div class="review-hdr">Selected classes</div>
       ${classRows||'<div class="review-row" style="color:#9B9991">No classes selected</div>'}
+      ${(isExternalStudent() && calcClassesTotal()>0) ? `
+        <div class="review-row" style="background:#FAEEDA">
+          <div><div>External Student Registration Fee</div><div class="review-sub">One-time fee</div></div>
+          <div style="flex-shrink:0">$${EXTERNAL_FEE}</div>
+        </div>` : ""}
       <div class="review-row total"><span>Total due</span><span>$${total.toLocaleString()}</span></div>
     </div>`;
 }
@@ -1039,6 +1057,11 @@ function buildPrint() {
     <div class="print-section">
       <div class="print-section-title">Enrolled classes</div>
       ${enrolledRows||'<div class="print-row" style="color:#9B9991">No classes selected</div>'}
+      ${(isExternalStudent() && calcClassesTotal()>0) ? `
+        <div class="print-row" style="background:#FAEEDA;padding:6px 8px;border-radius:4px;margin-top:6px">
+          <div><div>External Student Registration Fee</div><div class="detail">One-time fee</div></div>
+          <div style="flex-shrink:0">$${EXTERNAL_FEE}</div>
+        </div>` : ""}
       <div class="print-total"><span>Total due</span><span>$${total.toLocaleString()}</span></div>
     </div>
 
