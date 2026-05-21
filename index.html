@@ -282,7 +282,7 @@
 // ─── COURSE DATA ─────────────────────────────────────────
 const SLOTS = [
   { id:"pilates", name:"Mat Pilates", grade:"K–G8", price:"$10 / session", priceNum:10,
-    color:"#1D9E75", tagBg:"#E1F5EE", tagTx:"#085041", multi:false, package:false,
+    color:"#1D9E75", tagBg:"#E1F5EE", tagTx:"#085041", multi:false, package:false, canceled:true,
     sessions:[{ sid:"pilates-a", time:"Mon 5:00–6:00 pm", gradeLabel:"", days:["Mon"], ts:[[1020,1080]], cap:20 }] },
 
   { id:"golf", name:"Golf", grade:"G1–G8", price:"$180 / 4 sessions", priceNum:180,
@@ -793,14 +793,17 @@ function renderCourseGrid() {
   const avail = WEEK_AVAIL[week] || [];
 
   SLOTS.forEach(cl => {
-    const isAvail = avail.includes(cl.id);
+    const isCanceled = cl.canceled === true;
+    const isAvail = avail.includes(cl.id) && !isCanceled;
     const s0 = cl.sessions[0];
     const cap0 = getCapEntry(s0.sid, week);
     const card = document.createElement("div");
     const hasAnySel = cl.sessions.some(s => isSelected(s.sid, week) || isWaitlisted(s.sid, week));
     card.className = "course-card"+(isAvail?"":" unavail")+(hasAnySel?" has-selection":"");
 
-    const pkgBadge = cl.package
+    const pkgBadge = isCanceled
+      ? `<span style="font-size:10px;background:#FCEBEB;color:#791F1F;padding:1px 6px;border-radius:10px;margin-left:5px;font-weight:600">CANCELED</span>`
+      : cl.package
       ? `<span style="font-size:10px;background:#F1EFE8;color:#5F5E5A;padding:1px 6px;border-radius:10px;margin-left:5px">Full season</span>`
       : "";
 
@@ -821,7 +824,7 @@ function renderCourseGrid() {
       ${cl.grade?`<div class="cgrade" style="color:${cl.tagTx}">${cl.grade}</div>`:""}
       <div class="cprice">${cl.price}</div>
       <div class="slot-list" id="slots-${cl.id}"></div>
-      ${!isAvail?'<div class="unavail-note">Not offered this week</div>':""}
+      ${isCanceled ? '<div class="unavail-note" style="color:#791F1F;font-weight:500;font-style:normal">Class canceled — teacher unavailable. Please contact office for refund.</div>' : !isAvail ? '<div class="unavail-note">Not offered this week</div>' : ''}
     `;
 
     const slotList = card.querySelector(`#slots-${cl.id}`);
